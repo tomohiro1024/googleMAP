@@ -55,30 +55,53 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        markers: _markers,
-        // 衛生写真かノーマルを表示
-        mapType: MapType.hybrid,
-        //　Mapの初期位置
-        initialCameraPosition: _initialPosition,
-        // Mapが作成されたタイミングの処理
-        onMapCreated: (GoogleMapController controller) async {
-          await getCurrentPosition();
-          _controller = controller;
-          setState(() {
-            _markers.add(
-              Marker(
-                markerId: const MarkerId('3'),
-                position: currentPosition.target,
-                infoWindow: const InfoWindow(title: '現在地'),
+      body: SafeArea(
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.place,
+                  color: Colors.cyan,
+                ),
+                hintText: '場所を検索',
+                filled: true,
+                fillColor: Colors.cyanAccent.withOpacity(0.1),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.cyan),
+                ),
               ),
-            );
-          });
-          _controller
-              .animateCamera(CameraUpdate.newCameraPosition(currentPosition));
-        },
-        // 右下のボタンを押下すると現在地に移動する
-        myLocationEnabled: true,
+            ),
+            Expanded(
+              child: GoogleMap(
+                markers: _markers,
+                // 衛生写真かノーマルを表示
+                mapType: MapType.hybrid,
+                //　Mapの初期位置
+                initialCameraPosition: _initialPosition,
+                // Mapが作成されたタイミングの処理
+                onMapCreated: (GoogleMapController controller) async {
+                  await getCurrentPosition();
+                  _controller = controller;
+                  setState(() {
+                    _markers.add(
+                      Marker(
+                        markerId: const MarkerId('3'),
+                        position: currentPosition.target,
+                        infoWindow: const InfoWindow(title: '現在地'),
+                      ),
+                    );
+                  });
+                  _controller.animateCamera(
+                      CameraUpdate.newCameraPosition(currentPosition));
+                },
+                // 右下のボタンを押下すると現在地に移動する
+                myLocationEnabled: true,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
