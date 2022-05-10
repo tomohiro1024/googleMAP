@@ -55,6 +55,7 @@ class _MapPageState extends State<MapPage> {
 
   // 緯度と経度を検索する
   Future<CameraPosition> searchLatlng(String address) async {
+    // locationFromAddressはgeocodingに用意されているメソッド
     List<Location> locations = await locationFromAddress(address);
     return CameraPosition(
         target: LatLng(locations[0].latitude, locations[0].longitude),
@@ -81,6 +82,13 @@ class _MapPageState extends State<MapPage> {
                   borderSide: BorderSide(color: Colors.cyan),
                 ),
               ),
+              // 検索した後の処理
+              onSubmitted: (value) async {
+                CameraPosition result = await searchLatlng(value);
+                // 画面を検索した場所に移動する
+                _controller
+                    .animateCamera(CameraUpdate.newCameraPosition(result));
+              },
             ),
             Expanded(
               child: GoogleMap(
