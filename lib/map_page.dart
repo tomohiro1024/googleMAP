@@ -18,6 +18,8 @@ class _MapPageState extends State<MapPage> {
     zoom: 17,
   );
 
+  String? errorText;
+
   // 現在の場所
   late final CameraPosition currentPosition;
   // 現在の場所を取得
@@ -78,16 +80,27 @@ class _MapPageState extends State<MapPage> {
                 filled: true,
                 fillColor: Colors.cyanAccent.withOpacity(0.1),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide(color: Colors.cyan),
                 ),
               ),
               // 検索した後の処理
               onSubmitted: (value) async {
-                CameraPosition result = await searchLatlng(value);
-                // 画面を検索した場所に移動する
-                _controller
-                    .animateCamera(CameraUpdate.newCameraPosition(result));
+                try {
+                  CameraPosition result = await searchLatlng(value);
+                  // 画面を検索した場所に移動する
+                  _controller
+                      .animateCamera(CameraUpdate.newCameraPosition(result));
+                } catch (e) {
+                  print(e);
+                  setState(() {
+                    errorText = '正しい場所を入力して下さい';
+                    final snackBar = SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(errorText!),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  });
+                }
               },
             ),
             Expanded(
