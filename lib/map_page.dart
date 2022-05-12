@@ -90,6 +90,15 @@ class _MapPageState extends State<MapPage> {
                   // 画面を検索した場所に移動する
                   _controller
                       .animateCamera(CameraUpdate.newCameraPosition(result));
+                  setState(() {
+                    _markers.add(
+                      Marker(
+                        markerId: const MarkerId('4'),
+                        position: result.target,
+                        infoWindow: const InfoWindow(title: '検索した場所'),
+                      ),
+                    );
+                  });
                 } catch (e) {
                   print(e);
                   setState(() {
