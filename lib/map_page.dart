@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_map/searched_list_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapPage extends StatefulWidget {
@@ -73,33 +74,25 @@ class _MapPageState extends State<MapPage> {
                   borderSide: BorderSide(color: Colors.cyan),
                 ),
               ),
-              // 検索した後の処理
-              onSubmitted: (value) async {
-                try {
-                  CameraPosition result = await searchLatlng(value);
-                  // 画面を検索した場所に移動する
-                  _controller
-                      .animateCamera(CameraUpdate.newCameraPosition(result));
-                  setState(() {
-                    _markers.add(
-                      Marker(
-                        markerId: const MarkerId('4'),
-                        position: result.target,
-                        infoWindow: const InfoWindow(title: '検索した場所'),
-                      ),
-                    );
-                  });
-                } catch (e) {
-                  print(e);
-                  setState(() {
-                    errorText = '正しい場所を入力して下さい';
-                    final snackBar = SnackBar(
-                      backgroundColor: Colors.red,
-                      content: Text(errorText!),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  });
-                }
+              onTap: () {
+                Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const SearchedListPage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeUpwardsPageTransitionsBuilder()
+                            .buildTransitions(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SearchedListPage()),
+                                context,
+                                animation,
+                                secondaryAnimation,
+                                child);
+                      },
+                    ));
               },
             ),
             Expanded(
