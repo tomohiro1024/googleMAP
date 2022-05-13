@@ -12,21 +12,29 @@ class _SearchedListPageState extends State<SearchedListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.place,
+        backgroundColor: Colors.black,
+        title: SizedBox(
+          height: 40,
+          child: TextField(
+            style: TextStyle(
               color: Colors.cyan,
             ),
-            hintText: '場所を検索',
-            filled: true,
-            fillColor: Colors.cyanAccent.withOpacity(0.1),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.cyan),
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.place,
+                color: Colors.cyan,
+              ),
+              hintText: '場所を検索',
+              hintStyle: const TextStyle(fontSize: 15, color: Colors.cyan),
+              filled: true,
+              fillColor: Colors.cyanAccent.withOpacity(0.1),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.cyan),
+              ),
             ),
+            // 検索した後の処理
+            onSubmitted: (value) async {},
           ),
-          // 検索した後の処理
-          onSubmitted: (value) async {},
         ),
       ),
     );
