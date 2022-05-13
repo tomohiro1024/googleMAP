@@ -43,17 +43,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   // ピンの表示
-  final Set<Marker> _markers = {
-    const Marker(
-      markerId: MarkerId('1'),
-      position: LatLng(35.71027175858155, 139.8107862279798),
-      infoWindow: InfoWindow(title: '東京スカイツリー', snippet: '634M'),
-    ),
-    const Marker(
-      markerId: MarkerId('2'),
-      position: LatLng(35.71055052892032, 139.8091661738491),
-    ),
-  };
+  final Set<Marker> _markers = {};
 
   // 緯度と経度を検索する
   Future<CameraPosition> searchLatlng(String address) async {
@@ -123,15 +113,6 @@ class _MapPageState extends State<MapPage> {
                 onMapCreated: (GoogleMapController controller) async {
                   await getCurrentPosition();
                   _controller = controller;
-                  setState(() {
-                    _markers.add(
-                      Marker(
-                        markerId: const MarkerId('3'),
-                        position: currentPosition.target,
-                        infoWindow: const InfoWindow(title: '現在地'),
-                      ),
-                    );
-                  });
                   _controller.animateCamera(
                       CameraUpdate.newCameraPosition(currentPosition));
                 },
