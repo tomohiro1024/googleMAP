@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SearchedListPage extends StatefulWidget {
   const SearchedListPage({Key? key}) : super(key: key);
@@ -8,6 +10,15 @@ class SearchedListPage extends StatefulWidget {
 }
 
 class _SearchedListPageState extends State<SearchedListPage> {
+  // 緯度と経度を検索する
+  Future<CameraPosition> searchLatlng(String address) async {
+    // locationFromAddressはgeocodingに用意されているメソッド
+    List<Location> locations = await locationFromAddress(address);
+    return CameraPosition(
+        target: LatLng(locations[0].latitude, locations[0].longitude),
+        zoom: 16);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +27,7 @@ class _SearchedListPageState extends State<SearchedListPage> {
         title: SizedBox(
           height: 40,
           child: TextField(
+            autofocus: true,
             style: TextStyle(
               color: Colors.cyan,
             ),

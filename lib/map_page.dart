@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map/searched_list_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -45,15 +44,6 @@ class _MapPageState extends State<MapPage> {
 
   // ピンの表示
   final Set<Marker> _markers = {};
-
-  // 緯度と経度を検索する
-  Future<CameraPosition> searchLatlng(String address) async {
-    // locationFromAddressはgeocodingに用意されているメソッド
-    List<Location> locations = await locationFromAddress(address);
-    return CameraPosition(
-        target: LatLng(locations[0].latitude, locations[0].longitude),
-        zoom: 16);
-  }
 
   @override
   Widget build(BuildContext context) {
