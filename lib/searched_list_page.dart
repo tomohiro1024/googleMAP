@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_place/google_place.dart';
 
 class SearchedListPage extends StatefulWidget {
   const SearchedListPage({Key? key}) : super(key: key);
@@ -10,6 +11,9 @@ class SearchedListPage extends StatefulWidget {
 }
 
 class _SearchedListPageState extends State<SearchedListPage> {
+  late GooglePlace googlePlace;
+  List<AutocompletePrediction>? prediction = [];
+
   // 緯度と経度を検索する
   Future<CameraPosition> searchLatlng(String address) async {
     // locationFromAddressはgeocodingに用意されているメソッド
