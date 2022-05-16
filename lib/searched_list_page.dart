@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_map/place.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 
@@ -14,8 +15,13 @@ class _SearchedListPageState extends State<SearchedListPage> {
   late GooglePlace googlePlace;
   List<AutocompletePrediction>? prediction = [];
 
+  // 検索した場所を管理するリスト
+  List<Place> places = [];
+
   // 緯度と経度を検索する
-  Future<CameraPosition> searchLatlng(String address) async {
+  Future<CameraPosition> searchLatlng(String txt) async {
+    // 引数txt(検索した場所)の取得
+    final result = await googlePlace.autocomplete.get(txt);
     // locationFromAddressはgeocodingに用意されているメソッド
     List<Location> locations = await locationFromAddress(address);
     return CameraPosition(
